@@ -28,6 +28,15 @@ const renderRacerCars = (racers) => {
 	`;
 };
 
+const renderTrackCard = (track) => {
+  const { id, name } = track;
+
+  return `
+		<li id="${id}" class="card track">
+			<h3>${name}</h3>
+		</li>
+	`;
+};
 const renderTrackCards = (tracks) => {
   if (!tracks.length) {
     return `
@@ -44,31 +53,19 @@ const renderTrackCards = (tracks) => {
 	`;
 };
 
-const renderTrackCard = (track) => {
-  const { id, name } = track;
-
-  return `
-		<li id="${id}" class="card track">
-			<h3>${name}</h3>
-		</li>
-	`;
-};
-
 const renderCountdown = (count) => `
 		<h2>Race Starts In...</h2>
 		<p id="big-numbers">${count}</p>
 	`;
 
-const renderRaceStartView = (track, racers) => {
-  return `
-		<header>
-			<h1>Race: ${track.name}</h1>
+const renderRaceStartView = (track) =>
+  `<header>
+			<h1>Race: ${track}</h1>
 		</header>
 		<main id="two-columns">
 			<section id="leaderBoard">
 				${renderCountdown(3)}
 			</section>
-
 			<section id="accelerate">
 				<h2>Directions</h2>
 				<p>Click the button as fast as you can to make your racer go faster!</p>
@@ -77,9 +74,8 @@ const renderRaceStartView = (track, racers) => {
 		</main>
 		<footer></footer>
 	`;
-};
 
-const resultsView = (positions) => {
+const resultsView = (positions, playerId) => {
   positions.sort((a, b) => (a.final_position > b.final_position ? 1 : -1));
 
   return `
@@ -87,7 +83,7 @@ const resultsView = (positions) => {
 			<h1>Race Results</h1>
 		</header>
 		<main>
-			${raceProgress(positions)}
+			${raceProgress(positions, playerId)}
 			<a href="/race">Start a new race</a>
 		</main>
 	`;
@@ -99,8 +95,8 @@ const renderAt = (element, html) => {
   node.innerHTML = html;
 };
 
-const raceProgress = (positions) => {
-  let userPlayer = positions.find((e) => e.id === store.player_id);
+const raceProgress = (positions, playerId) => {
+  let userPlayer = positions.find((e) => e.id.toString() === playerId);
   userPlayer.driver_name += " (you)";
 
   positions = positions.sort((a, b) => (a.segment > b.segment ? -1 : 1));

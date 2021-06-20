@@ -37,20 +37,18 @@ const createRace = (player_id, track_id) => {
 };
 
 const getRace = (id) =>
-  fetch(`${SERVER}/api/races/${id}`)
-    .then((response) => response.json())
+  fetch(`${SERVER}/api/races/${id - 1}`)
+    .then((res) => res.json())
     .catch((err) => console.error("Problem with getRace request::", err));
 
 const startRace = (id) =>
-  fetch(`${SERVER}/api/races/${id}/start`, {
+  fetch(`${SERVER}/api/races/${id - 1}/start`, {
     method: "POST",
     ...defaultFetchOpts(),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.error("Problem with startRace request::", err));
+  }).catch((err) => console.error("Problem with startRace request::", err));
 
 const accelerate = (id) =>
-  fetch(`${SERVER}/api/races/${id}/accelerate`, {
+  fetch(`${SERVER}/api/races/${id - 1}/accelerate`, {
     method: "POST",
     ...defaultFetchOpts(),
   }).catch((err) => console.error("Problem with startRace request::", err));
