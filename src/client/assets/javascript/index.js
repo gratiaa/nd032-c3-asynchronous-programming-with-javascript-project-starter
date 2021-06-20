@@ -51,12 +51,12 @@ function setupClickHandlers() {
 
       // Race track form field
       if (target.matches(".card.track")) {
-        handleSelectTrack(target);
+        return handleSelectTrack(target);
       }
 
       // Podracer form field
       if (target.matches(".card.podracer")) {
-        handleSelectPodRacer(target);
+        return handleSelectPodRacer(target);
       }
 
       // Submit create race form
@@ -64,13 +64,15 @@ function setupClickHandlers() {
         event.preventDefault();
 
         // start race
-        handleCreateRace();
+        return handleCreateRace();
       }
 
       // Handle acceleration click
       if (target.matches("#gas-peddle")) {
-        handleAccelerate(target);
+        return handleAccelerate(target);
       }
+
+      return;
     },
     false
   );
@@ -94,21 +96,29 @@ async function delay(ms) {
 
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
+  const { player_id, track_id } = store;
+
+  if (!player_id || !track_id) {
+    return alert("Please choose your track and racer");
+  }
+
   // render starting UI
   renderAt("#race", renderRaceStartView());
 
-  // TODO - Get player_id and track_id from the store
+  const race = await createRace(player_id, track_id);
 
-  // const race = TODO - invoke the API call to create the race, then save the result
-
-  // TODO - update the store with the race id
+  // update the store with the race id
+  store.race_id = race;
 
   // The race has been created, now start the countdown
-  // TODO - call the async function runCountdown
+  // call the async function runCountdown
+  await runCountdown();
 
-  // TODO - call the async function startRace
+  // call the async function startRace
+  await startRace();
 
-  // TODO - call the async function runRace
+  // call the async function runRace
+  return runRace();
 }
 
 function runRace(raceID) {
@@ -161,7 +171,8 @@ function handleSelectPodRacer(target) {
   // add class selected to current target
   target.classList.add("selected");
 
-  // TODO - save the selected racer to the store
+  // save the selected racer to the store
+  store.player_id = target.id;
 }
 
 function handleSelectTrack(target) {
@@ -169,6 +180,7 @@ function handleSelectTrack(target) {
 
   // remove class selected from all track options
   const selected = document.querySelector("#tracks .selected");
+
   if (selected) {
     selected.classList.remove("selected");
   }
@@ -176,7 +188,8 @@ function handleSelectTrack(target) {
   // add class selected to current target
   target.classList.add("selected");
 
-  // TODO - save the selected track id to the store
+  // save the selected track id to the store
+  store.track_id = target.id;
 }
 
 function handleAccelerate() {
