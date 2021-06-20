@@ -5,10 +5,10 @@ const renderRacerCard = (racer) => {
   return `
 		<li>
 			<button type="button" class="card podracer" id="${id}">
-				<h5>${driver_name}</h5>
-				<p>${top_speed}</p>
-				<p>${acceleration}</p>
-				<p>${handling}</p>
+				<h5>Name: ${driver_name}</h5>
+				<p>Top Speed: ${top_speed}</p>
+				<p>Acceleration: ${acceleration}</p>
+				<p>Handling: ${handling}</p>
 			</button>
 		</li>
 	`;
