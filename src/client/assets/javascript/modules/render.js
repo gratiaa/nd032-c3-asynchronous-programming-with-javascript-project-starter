@@ -3,11 +3,13 @@ const renderRacerCard = (racer) => {
   const { id, driver_name, top_speed, acceleration, handling } = racer;
 
   return `
-		<li class="card podracer" id="${id}">
-			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+		<li>
+			<button type="button" class="card podracer" id="${id}">
+				<h5>${driver_name}</h5>
+				<p>${top_speed}</p>
+				<p>${acceleration}</p>
+				<p>${handling}</p>
+			</button>
 		</li>
 	`;
 };
@@ -32,11 +34,14 @@ const renderTrackCard = (track) => {
   const { id, name } = track;
 
   return `
-		<li id="${id}" class="card track">
-			<h3>${name}</h3>
+		<li>
+			<button type="button" id="${id}" class="card track">
+				<h5>${name}</h5>
+			</button>
 		</li>
 	`;
 };
+
 const renderTrackCards = (tracks) => {
   if (!tracks.length) {
     return `
