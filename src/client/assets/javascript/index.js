@@ -47,11 +47,19 @@ function setupClickHandlers() {
       const { target } = event;
 
       // Race track form field
+      if (target.parentElement.classList.value === "card track") {
+        await handleSelectTrack(target.parentElement);
+      }
+
       if (target.matches(".card.track")) {
         await handleSelectTrack(target);
       }
 
       // Podracer form field
+      if (target.parentElement.classList.value === "card podracer") {
+        await handleSelectPodRacer(target.parentElement);
+      }
+
       if (target.matches(".card.podracer")) {
         await handleSelectPodRacer(target);
       }
@@ -101,8 +109,6 @@ async function handleCreateRace() {
   // The race has been created, now start the countdown
   // call the async function runCountdown
   await runCountdown();
-
-  console.log(race);
 
   // call the async function startRace
   await startRace(store.race_id);
