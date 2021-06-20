@@ -20,6 +20,10 @@ section#accelerate button {
   cursor: pointer;
 }
 
+section#accelerate.hide {
+  display: none;
+}
+
 #big-numbers {
   font-weight: bolder;
   font-size: 70px;

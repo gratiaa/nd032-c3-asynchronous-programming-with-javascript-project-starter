@@ -141,6 +141,8 @@ async function runRace(raceID) {
             "#leaderBoard",
             raceProgress(res.positions, store.player_id)
           );
+
+          document.getElementById("accelerate").classList.remove("hide");
         } else if (res.status === "finished") {
           clearInterval(intervalId); // to stop the interval from repeating
 

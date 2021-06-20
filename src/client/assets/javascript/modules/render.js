@@ -71,7 +71,7 @@ const renderRaceStartView = (track) =>
 			<section id="leaderBoard">
 				${renderCountdown(3)}
 			</section>
-			<section id="accelerate">
+			<section id="accelerate" class="hide">
 				<h2>Directions</h2>
 				<p>Click the button as fast as you can to make your racer go faster!</p>
 				<button id="gas-peddle">Click Me To Win!</button>
