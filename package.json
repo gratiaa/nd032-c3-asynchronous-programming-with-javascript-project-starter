@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/server/index.js",
     "start:api": "ORIGIN_ALLOWED=http://localhost:3000 ./bin/server-osx",
-    "lint": "eslint ./**/*.js",
+    "lint": "eslint src/**/*.js",
     "format": "npx prettier --write ."
   },
   "dependencies": {
