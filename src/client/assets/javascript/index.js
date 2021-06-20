@@ -17,7 +17,7 @@ import {
 } from "./modules/api.js";
 
 // The store will hold all information needed globally
-var store = {
+const store = {
   track_id: undefined,
   player_id: undefined,
   race_id: undefined,

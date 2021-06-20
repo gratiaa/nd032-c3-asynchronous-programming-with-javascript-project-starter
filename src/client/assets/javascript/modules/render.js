@@ -101,7 +101,8 @@ const renderAt = (element, html) => {
 };
 
 const raceProgress = (positions, playerId) => {
-  let userPlayer = positions.find((e) => e.id.toString() === playerId);
+  const userPlayer = positions.find((e) => e.id.toString() === playerId);
+
   userPlayer.driver_name += " (you)";
 
   positions = positions.sort((a, b) => (a.segment > b.segment ? -1 : 1));
