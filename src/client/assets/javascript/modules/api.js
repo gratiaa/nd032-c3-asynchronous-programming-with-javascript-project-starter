@@ -49,10 +49,10 @@ const startRace = (id) =>
     .then((res) => res.json())
     .catch((err) => console.error("Problem with startRace request::", err));
 
-const accelerate = (id) => {
-  // POST request to `${SERVER}/api/races/${id}/accelerate`
-  // options parameter provided as defaultFetchOpts
-  // no body or datatype needed for this request
-};
+const accelerate = (id) =>
+  fetch(`${SERVER}/api/races/${id}/accelerate`, {
+    method: "POST",
+    ...defaultFetchOpts(),
+  }).catch((err) => console.error("Problem with startRace request::", err));
 
 export { getTracks, getRacers, createRace, getRace, startRace, accelerate };

@@ -1,4 +1,16 @@
 // HTML VIEWS ------------------------------------------------
+const renderRacerCard = (racer) => {
+  const { id, driver_name, top_speed, acceleration, handling } = racer;
+
+  return `
+		<li class="card podracer" id="${id}">
+			<h3>${driver_name}</h3>
+			<p>${top_speed}</p>
+			<p>${acceleration}</p>
+			<p>${handling}</p>
+		</li>
+	`;
+};
 
 const renderRacerCars = (racers) => {
   if (!racers.length) {
@@ -13,19 +25,6 @@ const renderRacerCars = (racers) => {
 		<ul id="racers">
 			${results}
 		</ul>
-	`;
-};
-
-const renderRacerCard = (racer) => {
-  const { id, driver_name, top_speed, acceleration, handling } = racer;
-
-  return `
-		<li class="card podracer" id="${id}">
-			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
-		</li>
 	`;
 };
 
@@ -129,10 +128,8 @@ const raceProgress = (positions) => {
 
 export {
   renderRacerCars,
-  renderRacerCard,
   renderTrackCards,
   renderTrackCard,
-  renderCountdown,
   renderRaceStartView,
   resultsView,
   renderAt,

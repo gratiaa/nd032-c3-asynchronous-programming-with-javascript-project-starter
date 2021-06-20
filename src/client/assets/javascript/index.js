@@ -1,9 +1,6 @@
 import {
   renderRacerCars,
-  renderRacerCard,
   renderTrackCards,
-  renderTrackCard,
-  renderCountdown,
   renderRaceStartView,
   resultsView,
   renderAt,
@@ -85,15 +82,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   setupClickHandlers();
 });
 
-async function delay(ms) {
-  try {
-    return await new Promise((resolve) => setTimeout(resolve, ms));
-  } catch (error) {
-    console.log("an error shouldn't be possible here");
-    console.log(error);
-  }
-}
-
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
   const { player_id, track_id } = store;
@@ -118,41 +106,68 @@ async function handleCreateRace() {
   await startRace();
 
   // call the async function runRace
-  return runRace();
+  return runRace(store.race_id);
 }
 
 function runRace(raceID) {
+  if (!raceID) {
+    return;
+  }
+
   return new Promise((resolve) => {
-    // TODO - use Javascript's built in setInterval method to get race info every 500ms
-    /* 
-		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
+    // use Javascript's built in setInterval method to get race info every 500ms
+    let status, positions;
 
-		renderAt('#leaderBoard', raceProgress(res.positions))
-	*/
-    /* 
-		TODO - if the race info status property is "finished", run the following:
+    const intervalId = setInterval(() => {
+      try {
+        const raceInfo = await getRace(raceID);
 
-		clearInterval(raceInterval) // to stop the interval from repeating
-		renderAt('#race', resultsView(res.positions)) // to render the results view
-		reslove(res) // resolve the promise
-	*/
+        status = raceInfo.status;
+        positions = raceInfo.positions;
+      } catch (err) {
+        console.error("Problem with getRace in runRace::", err);
+      }
+    }, 500);
+
+    if (status === "in-progress") {
+      renderAt("#leaderBoard", raceProgress(res.positions));
+    } else if (status === "finished") {
+      clearInterval(intervalId); // to stop the interval from repeating
+      renderAt("#race", resultsView(res.positions)); // to render the results view
+      resolve(res); // resolve the promise
+    }
+  }).catch((err) => {
+    console.error("Problem with runRace::", err);
   });
-  // remember to add error handling for the Promise
 }
-
+async function delay(ms) {
+  try {
+    return await new Promise((resolve) => setTimeout(resolve, ms));
+  } catch (error) {
+    console.log("an error shouldn't be possible here");
+    console.log(error);
+  }
+}
 async function runCountdown() {
   try {
     // wait for the DOM to load
     await delay(1000);
+
     let timer = 3;
 
     return new Promise((resolve) => {
       // TODO - use Javascript's built in setInterval method to count down once per second
+      const intervalId = setInterval(() => {
+        timer -= 1;
+      }, 1000);
 
       // run this DOM manipulation to decrement the countdown for the user
       document.getElementById("big-numbers").innerHTML = --timer;
 
-      // TODO - if the countdown is done, clear the interval, resolve the promise, and return
+      // if the countdown is done, clear the interval, resolve the promise, and return
+      clearInterval(intervalId);
+
+      return resolve();
     });
   } catch (error) {
     console.log(error);
@@ -194,5 +209,7 @@ function handleSelectTrack(target) {
 
 function handleAccelerate() {
   console.log("accelerate button clicked");
-  // TODO - Invoke the API call to accelerate
+
+  // Invoke the API call to accelerate
+  return accelerate(store.race_id);
 }
